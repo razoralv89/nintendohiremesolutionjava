@@ -222,6 +222,27 @@ class Utils {
         return indexes;
     }
 
+    static int positive(byte val) {
+        int resp = val;
+        if (val < 0) {
+            resp = 256 + val;
+        }
+        return resp;
+    }
+    
+    static void printBlacklist() {
+        int[] counters = new int[256];
+        for (int i = 0; i < 256; i++) {
+            counters[positive(confusion[i])]++;
+        }
+        for (int i = 0; i < counters.length; i++) {
+            if (counters[i] == 0) {
+                System.out.println(Utils.bytesToHex(new byte[]{(byte) i}));
+            }
+        }
+    }
+
+
     static final byte[] confusion = new byte[]{
             (byte) 0xac, (byte) 0xd1, (byte) 0x25, (byte) 0x94, (byte) 0x1f, (byte) 0xb3, (byte) 0x33, (byte) 0x28, (byte) 0x7c, (byte) 0x2b, (byte) 0x17, (byte) 0xbc, (byte) 0xf6, (byte) 0xb0, (byte) 0x55, (byte) 0x5d,
             (byte) 0x8f, (byte) 0xd2, (byte) 0x48, (byte) 0xd4, (byte) 0xd3, (byte) 0x78, (byte) 0x62, (byte) 0x1a, (byte) 0x02, (byte) 0xf2, (byte) 0x01, (byte) 0xc9, (byte) 0xaa, (byte) 0xf0, (byte) 0x83, (byte) 0x71,

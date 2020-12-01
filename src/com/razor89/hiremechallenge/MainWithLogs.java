@@ -180,7 +180,10 @@ public class MainWithLogs {
 ////            (byte) 0xa4, (byte) 0x85, (byte) 0x1e, (byte) 0x0d, (byte) 0x86, (byte) 0xc7, (byte) 0x4f, (byte) 0xba, (byte) 0x75, (byte) 0x5e, (byte) 0xcb, (byte) 0xc3, (byte) 0x6e, (byte) 0x48, (byte) 0x79, (byte) 0x8f
 //    };
 
-    static byte[] input = Utils.hexStringToByteArray("8BE5F006896938BCC6075088C28C3F9562566298A4A531FAE8CEC7837FBBEF60");
+
+
+
+    static byte[] input = Utils.hexStringToByteArray("8BE5F006896938BCC60750880B8C3F9562566298A4A531FAE8CEC7837FBBEF60");
 
     static void forward(byte[] indexes, int[] output, byte[] conf, int[] diff) {
         for (int i = 0; i < 256; i++) {
@@ -229,7 +232,6 @@ public class MainWithLogs {
             System.out.println(line2.substring(2, line2.length()));
         }
     }
-
 
     public static void main(String[] args) {
 
