@@ -130,6 +130,17 @@ class Utils {
 
     static final int N = 32;
 
+    static void printMatrix(int[][]matrix)
+    {
+        for (int i = 0; i < 32; i++) {
+            System.out.print("{");
+            for (int j = 0; j < 33; j++) {
+                System.out.print(matrix[i][j] + ",");
+            }
+            System.out.println("},");
+        }
+    }
+
     static byte[] equationSystemSolver(int[] results) {
 
         int[][] a = {
@@ -169,11 +180,12 @@ class Utils {
         for (int i = 0; i < N; i++) {
             a[i][N] = results[i];
         }
-        byte[] resp = new byte[32];
         performOperation(a);
+        byte[] resp = new byte[32];
         for (int i = 0; i < N; i++) {
             resp[i] = (byte) (a[i][N] / a[i][i]);
         }
+
         return resp;
     }
 
@@ -229,7 +241,7 @@ class Utils {
         }
         return resp;
     }
-    
+
     static void printBlacklist() {
         int[] counters = new int[256];
         for (int i = 0; i < 256; i++) {

@@ -80,7 +80,7 @@ public class RecursiveReverse {
             return indexes;
         }
         byte[] conf = Utils.equationSystemSolver(indexes);
-//        System.out.println("Conf: " + Utils.bytesToHex(conf));
+//         System.out.println("Conf: " + Utils.bytesToHex(conf));
         int[][] possibilities = new int[32][4];
         for (int i = 0; i < 32; i++) {
             Arrays.fill(possibilities[i], -1);
@@ -89,10 +89,6 @@ public class RecursiveReverse {
             boolean found = false;
             //Must be up to 255 because it is the max result of xor operations over bytes
             int limit = 256;
-            if(depth==255)
-            {
-                limit = 256;
-            }
             for (int j = 0; j < limit; j++) {
                 if (confusion[j] == conf[i]) {
                     possibilities[i][Utils.indexOf(possibilities[i], -1)] = j;
@@ -105,7 +101,7 @@ public class RecursiveReverse {
         }
         int[] positions = new int[32];
         int positionCounter = 1;
-        System.out.println("Position 0 for depth " + depth);
+//        System.out.println("Position 0 for depth " + depth);
         while (true) {
             int[] indexesTemp = Utils.getIndexesFromPositions(possibilities, positions);
             byte[] confTemp = Utils.equationSystemSolver(indexesTemp);
@@ -113,7 +109,8 @@ public class RecursiveReverse {
                 int[] resp = reverseConf(indexesTemp, depth + 1);
                 if (resp[0] != -1) {
                     System.out.println("Conf: " + Utils.bytesToHex(conf));
-                    System.out.println("Index " + Utils.bytesToHex(indexesTemp));
+                    System.out.println("Index: " + Utils.bytesToHex(indexesTemp));
+                    System.out.println("Position: " + positionCounter);
                     return resp;
                 }
             }
@@ -122,7 +119,7 @@ public class RecursiveReverse {
                 // No more combinations
                 break;
             }
-            System.out.println("Position " + positionCounter + " for depth " + depth);
+//            System.out.println("Position " + positionCounter + " for depth " + depth);
             positionCounter++;
         }
         return new int[]{-1};
