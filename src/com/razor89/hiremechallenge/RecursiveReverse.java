@@ -12,14 +12,13 @@ public class RecursiveReverse {
     static int[] outputPositions = new int[]{
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     };
-    static String outputHex = "52657665727365206D65206661737400308E1B81702368F7591832BA2A49DF92";//Reverse me fast
-    //    static String outputHex = "48697265206D65212121212121212100308E1B81702368F7591832BA2A49DF92";//Hire me!!!!!!!!
+    //    static String outputHex = "52657665727365206D65206661737400308E1B81702368F7591832BA2A49DF92";//Reverse me fast
+    static String outputHex = "48697265206D65212121212121212100308E1B81702368F7591832BA2A49DF92";//Hire me!!!!!!!!
     static byte[] output = Utils.hexStringToByteArray(outputHex);
 
     static long start = System.currentTimeMillis();
 
-    static boolean blacklisted(byte[]conf)
-    {
+    static boolean blacklisted(byte[] conf) {
         for (int j : blackList) {
             if (Utils.indexOf(conf, (byte) j) != -1) {
                 return true;
