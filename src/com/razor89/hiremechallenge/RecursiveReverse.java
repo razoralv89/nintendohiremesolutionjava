@@ -12,9 +12,9 @@ public class RecursiveReverse {
     static int[] outputPositions = new int[]{
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     };
-    //    static String outputHex = "52657665727365206D65206661737400308E1B81702368F7591832BA2A49DF92";//Reverse me fast
+    //static String outputHex = "52657665727365206D65206661737400308E1B81702368F7591832BA2A49DF92";//Reverse me fast
     static String outputHex = "48697265206D65212121212121212100308E1B81702368F7591832BA2A49DF92";//Hire me!!!!!!!!
-    static byte[] output = Utils.hexStringToByteArray(outputHex);
+    static byte[] output = "Hire me!!!!!!!!0".getBytes();
 
     static long start = System.currentTimeMillis();
 
@@ -35,24 +35,23 @@ public class RecursiveReverse {
             }
             System.out.println("]");
             int[] indexes = Utils.getIndexesFromPositions(possibilities, outputPositions);
-            //TODO Start from known output
-            /*byte[] tmp = Utils.hexStringToByteArray(Utils.indexesAll[256]);
-            for (int i = 0; i < tmp.length; i++) {
-                indexes[i] = Utils.positive(tmp[i]);
-            }*/
+            //Solves the equation system to get the last s_box output
             byte[] conf = Utils.equationSystemSolver(indexes);
+            //Filters the output from the blacklisted elements
             if (!blacklisted(conf)) {
                 System.out.println("Indexes: " + Utils.bytesToHex(indexes));
+                //Try to reverse 256 times starting with this combination
                 int[] result = reverseConf(indexes, 0);
                 if (result[0] != -1) {
                     return result;
                 }
             }
             System.out.println("Computing next positions");
+            //Move to next combination
             boolean error = next2(possibilities, outputPositions, 31);
             if (error) {
                 System.out.println("********************************");
-                System.out.println("********    ERROR    ***********");
+                System.out.println("***** NO SOLUTION FOUND ********");
                 System.out.println("********************************");
                 return new int[0];
             }
@@ -74,16 +73,17 @@ public class RecursiveReverse {
         return false;
     }
 
+    //Try to reverse the last known s_box result 256 times
     static int[] reverseConf(int[] indexes, int depth) {
         if (depth > 255) {
             return indexes;
         }
         byte[] conf = Utils.equationSystemSolver(indexes);
-//         System.out.println("Conf: " + Utils.bytesToHex(conf));
         int[][] possibilities = new int[32][4];
         for (int i = 0; i < 32; i++) {
             Arrays.fill(possibilities[i], -1);
         }
+        //Get all possible combinations to get from s_box to the initial indexes
         for (int i = 0; i < conf.length; i++) {
             boolean found = false;
             //Must be up to 255 because it is the max result of xor operations over bytes
@@ -100,7 +100,8 @@ public class RecursiveReverse {
         }
         int[] positions = new int[32];
         int positionCounter = 1;
-//        System.out.println("Position 0 for depth " + depth);
+        //Uncomment for more interactive logging
+        //System.out.println("Position 0 for depth " + depth);
         while (true) {
             int[] indexesTemp = Utils.getIndexesFromPositions(possibilities, positions);
             byte[] confTemp = Utils.equationSystemSolver(indexesTemp);
@@ -113,12 +114,14 @@ public class RecursiveReverse {
                     return resp;
                 }
             }
+            //Move to next combination
             boolean error = next(possibilities, positions, 31);
             if (error) {
-                // No more combinations
+                // No more combinations, this particular case is a dead end
                 break;
             }
-//            System.out.println("Position " + positionCounter + " for depth " + depth);
+            //Uncomment for more interactive logging
+            // System.out.println("Position " + positionCounter + " for depth " + depth);
             positionCounter++;
         }
         return new int[]{-1};
@@ -138,10 +141,12 @@ public class RecursiveReverse {
     }
 
     public static void main(String[] args) {
+
         int[][] possibilities = new int[32][256];
         for (int i = 0; i < 32; i++) {
             Arrays.fill(possibilities[i], -1);
         }
+        //Get all possible combinations to reverse from the desired text (Hire me!!!!!!!0) or any other
         for (int x = 0; x < 16; x++) {
             for (int i = 0; i < 256; i++) {
                 for (int j = 256; j < confusion.length; j++) {
@@ -155,6 +160,7 @@ public class RecursiveReverse {
         int[] indexes = reverseAll(possibilities);
         System.out.println("Found !!!!!!!!!!!!!!!!!!!: " + Utils.bytesToHex(indexes));
         System.out.println("Elapsed: " + (System.currentTimeMillis() - start));
+        //Print the final position in case we want to find the next solution just add 1 to the last position
         System.out.print("Final position: [");
         for (int outputPosition : outputPositions) {
             System.out.print(outputPosition + ", ");
